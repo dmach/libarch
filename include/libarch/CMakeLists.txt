@@ -1,0 +1,2 @@
+file(GLOB_RECURSE LIBARCH_HEADERS *.h)
+install(FILES ${LIBARCH_HEADERS} DESTINATION include/libarch)

@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/include
+
+Name: libarch
+Description: libarch
+Version: @PROGRAM_VERSION@
+Requires:
+Requires.private:
+Libs: -L${libdir} -larch
+Cflags: -I${includedir}
