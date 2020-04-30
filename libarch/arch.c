@@ -7,7 +7,6 @@
 
 
 // -pedantic-errors option checks if the numbers aren't too small
-#define ARCH_LIST_LEN 25
 #define MAX_ARCHES 10
 
 
@@ -23,7 +22,7 @@ typedef struct _Arch {
 } _Arch;
 
 
-static struct _Arch arch_list[ARCH_LIST_LEN] = {
+static struct _Arch arch_list[] = {
     // basearch: aarch64
     {
         .name = "aarch64",
@@ -289,10 +288,11 @@ static struct _Arch arch_list[ARCH_LIST_LEN] = {
     },
 };
 
+#define ARCH_LIST_LEN (sizeof(arch_list)/sizeof(*arch_list))
 
 ArchPtr get_arch(const char * name) {
     ArchPtr result = NULL;
-    for (int i = 0; i < ARCH_LIST_LEN; i++) {
+    for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
         if (strcmp(arch_list[i].name, name) == 0) {
             result = &arch_list[i];
             break;
@@ -349,7 +349,7 @@ char ** get_basearch_compatible_native_arches(const char * basearch) {
     result[0] = NULL;
 
 
-    for (int i = 0; i < ARCH_LIST_LEN; i++) {
+    for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
         ArchPtr arch = &arch_list[i];
         if (arch->name == NULL) {
             // ARCH_LIST_LEN is greater than actual array length
@@ -378,7 +378,7 @@ char ** get_basearch_compatible_multilib_arches(const char * basearch) {
     result[0] = NULL;
 
 
-    for (int i = 0; i < ARCH_LIST_LEN; i++) {
+    for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
         ArchPtr arch = &arch_list[i];
         if (arch->name == NULL) {
             // ARCH_LIST_LEN is greater than actual array length
