@@ -8,4 +8,4 @@ foreach(MODULE_NAME ${SWIG_LIBARCH_MODULES})
 endforeach()
 
 
-install(FILES __init__.py DESTINATION ${Python3_SITEARCH}/libarch)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py DESTINATION ${Python3_SITEARCH}/libarch)
