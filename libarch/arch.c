@@ -288,10 +288,12 @@ static struct _Arch arch_list[] = {
     },
 };
 
+
 #define ARCH_LIST_LEN (sizeof(arch_list)/sizeof(*arch_list))
 
-ArchPtr get_arch(const char * name) {
-    ArchPtr result = NULL;
+
+libarch_arch libarch_get_arch(const char * name) {
+    libarch_arch result = NULL;
     for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
         if (strcmp(arch_list[i].name, name) == 0) {
             result = &arch_list[i];
@@ -302,47 +304,47 @@ ArchPtr get_arch(const char * name) {
 }
 
 
-const char * get_arch_name(ArchPtr arch) {
+const char * libarch_arch_get_name(libarch_arch arch) {
     return arch->name;
 }
 
 
-const char * get_arch_basearch(ArchPtr arch) {
+const char * libarch_arch_get_basearch(libarch_arch arch) {
     return arch->basearch;
 }
 
 
-int get_arch_bits(ArchPtr arch) {
+int libarch_arch_get_bits(libarch_arch arch) {
     return arch->bits;
 }
 
 
-const char ** get_arch_compatible_native_arches(ArchPtr arch) {
+const char ** libarch_arch_get_compatible_native_arches(libarch_arch arch) {
     return arch->compatible_native_arches;
 }
 
 
-const char ** get_arch_compatible_multilib_arches(ArchPtr arch) {
+const char ** libarch_arch_get_compatible_multilib_arches(libarch_arch arch) {
     return arch->compatible_multilib_arches;
 }
 
 
-int get_arch_is_multilib(ArchPtr arch) {
+int libarch_arch_is_multilib(libarch_arch arch) {
     return arch->is_multilib;
 }
 
 
-int get_arch_is_noarch(ArchPtr arch) {
+int libarch_arch_is_noarch(libarch_arch arch) {
     return arch->is_noarch;
 }
 
 
-int get_arch_is_source(ArchPtr arch) {
+int libarch_arch_is_source(libarch_arch arch) {
     return arch->is_source;
 }
 
 
-char ** get_basearch_compatible_native_arches(const char * basearch) {
+char ** libarch_basearch_get_compatible_native_arches(const char * basearch) {
     // arch_list is a superset of all architectures,
     // allocating by it's length + 1 for the NULL terminator should be sufficient
     char ** result = malloc((ARCH_LIST_LEN + 1) * sizeof(char *));
@@ -350,7 +352,7 @@ char ** get_basearch_compatible_native_arches(const char * basearch) {
 
 
     for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
-        ArchPtr arch = &arch_list[i];
+        libarch_arch arch = &arch_list[i];
         if (arch->name == NULL) {
             // ARCH_LIST_LEN is greater than actual array length
             break;
@@ -371,7 +373,7 @@ char ** get_basearch_compatible_native_arches(const char * basearch) {
 }
 
 
-char ** get_basearch_compatible_multilib_arches(const char * basearch) {
+char ** libarch_basearch_get_compatible_multilib_arches(const char * basearch) {
     // arch_list is a superset of all architectures,
     // allocating by it's length + 1 for the NULL terminator should be sufficient
     char ** result = malloc((ARCH_LIST_LEN + 1) * sizeof(char *));
@@ -379,7 +381,7 @@ char ** get_basearch_compatible_multilib_arches(const char * basearch) {
 
 
     for (size_t i = 0; i < ARCH_LIST_LEN; i++) {
-        ArchPtr arch = &arch_list[i];
+        libarch_arch arch = &arch_list[i];
         if (arch->name == NULL) {
             // ARCH_LIST_LEN is greater than actual array length
             break;
@@ -398,34 +400,3 @@ char ** get_basearch_compatible_multilib_arches(const char * basearch) {
     }
     return result;
 }
-
-/*
-char ** get_basearch_compatible_multilib_arches(const char * basearch) {
-    // arch_list is a superset of all architectures,
-    // allocating by it's length + 1 for the NULL terminator should be sufficient
-    char ** result = malloc((ARCH_LIST_LEN + 1) * sizeof(char *));
-    result[0] = NULL;
-
-    for (int i = 0; i < ARCH_LIST_LEN; i++) {
-        ArchPtr arch = &arch_list[i];
-        if (arch->name == NULL) {
-            // ARCH_LIST_LEN is greater than actual array length
-            break;
-        }
-        if (arch->is_source) {
-            continue;
-        }
-        if (!arch->is_multilib) {
-            continue;
-        }
-        if (arch->is_noarch) {
-            // do not append noarch to multilib arches
-            continue;
-        }
-        if (strcmp(arch->basearch, basearch) == 0) {
-            list_append(result, arch->name);
-        }
-    }
-    return result;
-}
-*/
